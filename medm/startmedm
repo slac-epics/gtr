@@ -1,0 +1,25 @@
+# Notes by Shantha Condamoor (scondam):
+#
+# The adl files provided in the EPICS site gtr2-3 package have been converted
+# to edl files with the tool /afs/slac/g/lcls/tools/bin/linux-x86/adl2edl
+# Macros were added to the edl files to identified with the device with 'dev','area' and 'position'
+#
+#medm -cleanup -x -macro "name=vtr10010" gtrControl.adl &
+#sleep 5
+#medm -attach  -x -macro "name=vtr1012" gtrControl.adl &
+#medm -attach -x -macro "name=vtr10012" gtrControl.adl &
+#medm -attach -x -macro "name=vtr10012_8" gtrControl.adl &
+#medm -attach -x -macro "name=sis3300" gtrControl.adl &
+#medm -attach -x -macro "name=sis3301" gtrControl.adl &
+#medm -attach -x -macro "name=vtr8014" gtrControl.adl &
+#medm -attach -x -macro "name=vtr812" gtrControl.adl &
+
+#edm -cleanup -x -m "name=vtr10010" gtrControl.edl &
+#sleep 5
+#edm -x -m "name=vtr1012" gtrControl.edl &
+#edm -x -m "name=vtr10012" gtrControl.edl &
+#edm -x -m "name=vtr10012_8" gtrControl.edl &
+edm -x -m "dev=FADC,area=B025,position=100,name=sis3300" gtrControl.edl &
+#edm -x -m "name=sis3301" gtrControl.edl &
+#edm -x -m "name=vtr8014" gtrControl.edl &
+#edm -x -m "name=vtr812" gtrControl.edl &

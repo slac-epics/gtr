@@ -1,0 +1,49 @@
+#==============================================================================
+#
+# Abs:  LCLS GTR Waveform records
+#
+# Name: gtrwaveform.template
+# Author: Shantha Condamoor (scondam)
+#
+# Associated Display: gtrWaveform.edl
+#
+# Rem:	This file added has more macros to the original gtrwaveform.db file that was
+#	bundled in the EPICS package gtr2-3
+#	In the IOC application, use substitutions for expanding the macros. 
+# 
+# Macros:
+#	Note:	'dev', 'area' and 'position' together identify a specific, accessbile device.
+#		'name' and 'card' together identify a specific, controllable gtr module.	
+#	dev	Name of the gtr (ADC) device. (DeviceType)
+#		Example: For SIS3300, which is a Fast ADC, use FADC.
+#	area	Location of your IOC that houses this gtr (ADC) device. (Area)
+#		It describes one of the 21 areas currently in the LCLS Accelerator.
+#		Example: For an IOC located in the beam dump on Line 1, use DMP1
+#	position	Formed as (1 char optional) Position Prefix and (3 char) Position Code.
+#		If Position Prefix is unspecified, it indicates Beam Line (B).
+#		Position Code roughly indicates the position of the device in the area.
+#		Example: 100 means that the device is roughly position i the first 10% of its area.
+#	name	The name of the associated transient driver.
+#		The name is read from the driver during record initialization. 
+#		This should match with the name in the startup script st.cmd
+#	card	The card (link) number of the particular (digital adc) recorder starting with 1.
+#		The card number must match the value specified in the driver xxxConfig.
+#		Example: 'card' specified in sisfadcConfig() command in the application startup script st.cmd.
+#	signal		The input signal number
+#				Example: 0-7 for SIS3300
+#	size		The number of samples to acquire
+#				Example: 8000
+#	type		The waveform record data type.
+#				Example: SHORT
+#	desc		Description.
+#				Example Include SIS Type name in the description if applicable as sis3300
+#==============================================================================
+record(waveform,"$(dev):$(area):$(position):$(name)waveform$(signal)")
+{
+    field(DESC, "CH$(signal) $(desc) Waveform")
+    field(DTYP,"GTR")
+    field(INP,"#C$(card) S$(signal) @readData")
+    field(SCAN,"I/O Intr")
+    field(NELM,"$(size)")
+    field(FTVL,"$(type)")
+}

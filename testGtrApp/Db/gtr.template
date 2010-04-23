@@ -1,0 +1,130 @@
+#==============================================================================
+#
+# Abs:  LCLS GTR records
+#
+# Name: gtr.template
+# Author: Shantha Condamoor (scondam)
+#
+# Associated Display: gtrControl.edl
+#
+# Rem:	This file added has more macros to the original gtr.db file that was
+#	bundled in the EPICS package gtr2-3
+#	In the IOC application, use substitutions for expanding the macros. 
+# 
+# Macros:
+#	Note:	'dev', 'area' and 'position' together identify a specific, accessbile device.
+#		'name' and 'card' together identify a specific, controllable gtr module.	
+#	dev	Name of the gtr (ADC) device. (DeviceType)
+#		Example: For SIS3300, which is a Fast ADC, use FADC.
+#	area	Location of your IOC that houses this gtr (ADC) device. (Area)
+#		It describes one of the 21 areas currently in the LCLS Accelerator.
+#		Example: For an IOC located in the beam dump on Line 1, use DMP1
+#	position	Formed as (1 char optional) Position Prefix and (3 char) Position Code.
+#		If Position Prefix is unspecified, it indicates Beam Line (B).
+#		Position Code roughly indicates the position of the device in the area.
+#		Example: 100 means that the device is roughly position i the first 10% of its area.
+#	name	The name of the associated transient driver.
+#		The name is read from the driver during record initialization. 
+#		This should match with the name in the startup script st.cmd
+#	card	The card (link) number of the particular (digital adc) recorder starting with 1.
+#		The card number must match the value specified in the driver xxxConfig.
+#		Example: 'card' specified in sisfadcConfig() command in the application startup script st.cmd.
+#	desc	Description.
+#		Example Include SIS Type name in the description if applicable as sis3300
+#==============================================================================
+record(stringin,"$(dev):$(area):$(position):$(name)name")
+{
+    field(DESC, "$(desc) Name")
+    field(DTYP,"GTR")
+    field(INP,"#C$(card) S0@name")
+}
+record(mbbo,"$(dev):$(area):$(position):$(name)arm")
+{
+    field(DESC, "$(desc) Arm Choice")
+    field(DTYP,"GTR")
+    field(OUT,"#C$(card) S0@arm")
+}
+record(mbbo,"$(dev):$(area):$(position):$(name)clock")
+{
+    field(DESC, "$(desc) Clock")
+    field(DTYP,"GTR")
+    field(OUT,"#C$(card) S0@clock")
+}
+record(mbbo,"$(dev):$(area):$(position):$(name)trigger")
+{
+    field(DESC, "$(desc) Trigger Choice")
+    field(DTYP,"GTR")
+    field(OUT,"#C$(card) S0@trigger")
+}
+record(mbbo,"$(dev):$(area):$(position):$(name)multiEvent")
+{
+    field(DESC, "$(desc) Multi Event")
+    field(DTYP,"GTR")
+    field(OUT,"#C$(card) S0@multiEvent")
+}
+record(mbbo,"$(dev):$(area):$(position):$(name)preAverage")
+{
+    field(DESC, "$(desc) Pre Average")
+    field(DTYP,"GTR")
+    field(OUT,"#C$(card) S0@preAverage")
+}
+record(longout,"$(dev):$(area):$(position):$(name)numberPTS")
+{
+    field(DESC, "$(desc) PTS")
+    field(DTYP,"GTR")
+    field(OUT,"#C$(card) S0@numberPTS")
+}
+record(longout,"$(dev):$(area):$(position):$(name)numberPPS")
+{
+    field(DESC, "$(desc) PPS")
+    field(DTYP,"GTR")
+    field(OUT,"#C$(card) S0@numberPPS")
+}
+record(longout,"$(dev):$(area):$(position):$(name)numberPTE")
+{
+    field(DESC, "$(desc) PTE")
+    field(DTYP,"GTR")
+    field(OUT,"#C$(card) S0@numberPTE")
+}
+record(bo,"$(dev):$(area):$(position):$(name)softTrigger")
+{
+    field(DESC, "$(desc) Soft Trigger")
+    field(DTYP,"GTR")
+    field(OUT,"#C$(card) S0@softTrigger")
+}
+record(bo,"$(dev):$(area):$(position):$(name)autoRestart")
+{
+    field(DESC, "$(desc) Auto Restart")
+    field(SCAN,"I/O Intr")
+    field(PHAS,"1")
+    field(DTYP,"GTR")
+    field(OUT,"#C$(card) S0@autoRestart")
+    field(ZNAM,"no")
+    field(ONAM,"yes")
+    field(FLNK,"$(dev):$(area):$(position):$(name)counter")
+}
+record(calc,"$(dev):$(area):$(position):$(name)counter")
+{
+    field(DESC, "$(desc) Counter")
+    field(CALC,"A+1")
+    field(INPA,"$(name)counter")
+}
+record(ai,"$(dev):$(area):$(position):$(name)everySecond")
+{
+    field(DESC, "$(desc) Every Second")
+    field(SCAN,"1 second")
+    field(FLNK,"$(dev):$(area):$(position):$(name)perSecond")
+}
+record(calc,"$(dev):$(area):$(position):$(name)perSecond")
+{
+    field(DESC, "$(desc) Per Second")
+    field(CALC,"A")
+    field(INPA,"$(name)counter")
+    field(FLNK,"$(dev):$(area):$(position):$(name)reset")
+}
+record(ao,"$(dev):$(area):$(position):$(name)reset")
+{
+    field(DESC, "$(desc) Reset")
+    field(VAL,"0")
+    field(OUT,"$(name)counter NPP NMS")
+}

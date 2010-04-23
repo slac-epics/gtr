@@ -1,0 +1,22 @@
+#!/bin/sh
+
+set -ex
+
+GTR=.
+EPICS_CA_ADDR_LIST="134.79.219.255 127.0.0.1"
+export EPICS_CA_ADDR_LIST
+
+EPICS_CA_MAX_ARRAY_BYTES=80000000
+export EPICS_CA_MAX_ARRAY_BYTES
+
+EPICS_DISPLAY_PATH="${GTR}:${EPICS_DISPLAY_PATH}"
+export EPICS_DISPLAY_PATH
+
+case "$#" in
+    1)  dev="$1" ;;
+    *)  dev="sis3300" ;;
+esac
+
+exec medm \
+    -x -macro "name=${dev}" \
+    gtrControl.adl &

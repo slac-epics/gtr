@@ -1,0 +1,504 @@
+4 0 0
+beginScreenProperties
+major 4
+minor 0
+release 0
+x 237
+y 28
+w 305
+h 170
+font "helvetica-medium-r-18.0"
+ctlFont "helvetica-medium-r-8.0"
+btnFont "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 4
+textColor index 14
+ctlFgColor1 index 30
+ctlFgColor2 index 32
+ctlBgColor1 index 34
+ctlBgColor2 index 35
+topShadowColor index 37
+botShadowColor index 44
+snapToGrid
+gridSize 5
+endScreenProperties
+
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 100
+y 120
+w 90
+h 20
+controlPv "$(dev):$(area):$(position):$(name)perSecond"
+font "helvetica-medium-r-8.0"
+fontAlign "right"
+smartRefresh
+fastUpdate
+fgColor index 14
+bgColor index 4
+autoHeight
+format decimal
+nullColor index 32
+useHexPrefix
+objType "controls"
+newPos
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 200
+y 50
+w 100
+h 10
+font "helvetica-medium-r-8.0"
+fontAlign "center"
+fgColor index 14
+useDisplayBg
+value {
+ "multiEvent"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 100
+y 50
+w 100
+h 10
+font "helvetica-medium-r-8.0"
+fontAlign "center"
+fgColor index 14
+useDisplayBg
+value {
+ "trigger"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 0
+y 50
+w 100
+h 10
+font "helvetica-medium-r-8.0"
+fontAlign "center"
+fgColor index 14
+useDisplayBg
+value {
+ "clock"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 100
+y 10
+w 100
+h 10
+font "helvetica-medium-r-8.0"
+fontAlign "center"
+fgColor index 14
+useDisplayBg
+value {
+ "autorestart"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 0
+y 10
+w 100
+h 10
+font "helvetica-medium-r-8.0"
+fontAlign "center"
+fgColor index 14
+useDisplayBg
+value {
+ "arm"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 200
+y 120
+w 107
+h 16
+font "helvetica-medium-r-8.0"
+fontAlign "right"
+fgColor index 14
+useDisplayBg
+value {
+ "Samples/second"
+}
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 50
+y 140
+w 200
+h 20
+controlPv "$(dev):$(area):$(position):$(name)name"
+font "helvetica-medium-r-8.0"
+fontAlign "center"
+smartRefresh
+fastUpdate
+fgColor index 14
+bgColor index 4
+autoHeight
+format decimal
+nullColor index 32
+useHexPrefix
+objType "controls"
+newPos
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 0
+y 95
+w 100
+h 20
+controlPv "$(dev):$(area):$(position):$(name)numberPTS"
+font "helvetica-medium-r-8.0"
+smartRefresh
+fastUpdate
+fgColor index 14
+fgAlarm
+bgColor index 4
+editable
+autoHeight
+format decimal
+motifWidget
+nullColor index 32
+useHexPrefix
+objType "controls"
+newPos
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 0
+y 85
+w 100
+h 10
+font "helvetica-medium-r-8.0"
+fontAlign "center"
+fgColor index 14
+useDisplayBg
+value {
+ "numberPTS"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 100
+y 85
+w 100
+h 10
+font "helvetica-medium-r-8.0"
+fontAlign "center"
+fgColor index 14
+useDisplayBg
+value {
+ "numberPPS"
+}
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 100
+y 95
+w 100
+h 20
+controlPv "$(dev):$(area):$(position):$(name)numberPPS"
+font "helvetica-medium-r-8.0"
+smartRefresh
+fastUpdate
+fgColor index 14
+fgAlarm
+bgColor index 4
+editable
+autoHeight
+format decimal
+motifWidget
+nullColor index 32
+useHexPrefix
+objType "controls"
+newPos
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 200
+y 85
+w 100
+h 10
+font "helvetica-medium-r-8.0"
+fontAlign "center"
+fgColor index 14
+useDisplayBg
+value {
+ "numberPTE"
+}
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 200
+y 95
+w 100
+h 20
+controlPv "$(dev):$(area):$(position):$(name)numberPTE"
+font "helvetica-medium-r-8.0"
+smartRefresh
+fastUpdate
+fgColor index 14
+fgAlarm
+bgColor index 4
+editable
+autoHeight
+format decimal
+motifWidget
+nullColor index 32
+useHexPrefix
+objType "controls"
+newPos
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 0
+y 120
+w 100
+h 20
+fgColor index 14
+bgColor index 4
+topShadowColor index 2
+botShadowColor index 12
+font "helvetica-medium-r-10.0"
+icon
+buttonLabel "waveforms"
+numPvs 16
+numDsps 8
+displayFileName {
+  0 gtrWaveform.edl
+  1 gtrWaveform.edl
+  2 gtrWaveform.edl
+  3 gtrWaveform.edl
+  4 gtrWaveform.edl
+  5 gtrWaveform.edl
+  6 gtrWaveform.edl
+  7 gtrWaveform.edl
+}
+menuLabel {
+  0 $(dev):$(area):$(position):$(name)waveform0
+  1 $(dev):$(area):$(position):$(name)waveform1
+  2 $(dev):$(area):$(position):$(name)waveform2
+  3 $(dev):$(area):$(position):$(name)waveform3
+  4 $(dev):$(area):$(position):$(name)waveform4
+  5 $(dev):$(area):$(position):$(name)waveform5
+  6 $(dev):$(area):$(position):$(name)waveform6
+  7 $(dev):$(area):$(position):$(name)waveform7
+}
+symbols {
+  0 "name=$(dev):$(area):$(position):$(name),signal=0"
+  1 "name=$(dev):$(area):$(position):$(name),signal=1"
+  2 "name=$(dev):$(area):$(position):$(name),signal=2"
+  3 "name=$(dev):$(area):$(position):$(name),signal=3"
+  4 "name=$(dev):$(area):$(position):$(name),signal=4"
+  5 "name=$(dev):$(area):$(position):$(name),signal=5"
+  6 "name=$(dev):$(area):$(position):$(name),signal=6"
+  7 "name=$(dev):$(area):$(position):$(name),signal=7"
+}
+endObjectProperties
+
+# (Menu Button)
+object activeMenuButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 200
+y 60
+w 100
+h 20
+fgColor index 14
+bgColor index 4
+inconsistentColor index 12
+topShadowColor index 2
+botShadowColor index 12
+controlPv "$(dev):$(area):$(position):$(name)multiEvent"
+indicatorPv "$(dev):$(area):$(position):$(name)multiEvent"
+font "helvetica-medium-r-10.0"
+endObjectProperties
+
+# (Menu Button)
+object activeMenuButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 0
+y 60
+w 100
+h 20
+fgColor index 14
+bgColor index 4
+inconsistentColor index 12
+topShadowColor index 2
+botShadowColor index 12
+controlPv "$(dev):$(area):$(position):$(name)clock"
+indicatorPv "$(dev):$(area):$(position):$(name)clock"
+font "helvetica-medium-r-10.0"
+endObjectProperties
+
+# (Menu Button)
+object activeMenuButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 100
+y 60
+w 100
+h 20
+fgColor index 14
+bgColor index 4
+inconsistentColor index 12
+topShadowColor index 2
+botShadowColor index 12
+controlPv "$(dev):$(area):$(position):$(name)trigger"
+indicatorPv "$(dev):$(area):$(position):$(name)trigger"
+font "helvetica-medium-r-10.0"
+endObjectProperties
+
+# (Menu Button)
+object activeMenuButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 100
+y 20
+w 100
+h 20
+fgColor index 14
+bgColor index 4
+inconsistentColor index 12
+topShadowColor index 2
+botShadowColor index 12
+controlPv "$(dev):$(area):$(position):$(name)autoRestart"
+indicatorPv "$(dev):$(area):$(position):$(name)autoRestart"
+font "helvetica-medium-r-10.0"
+endObjectProperties
+
+# (Menu Button)
+object activeMenuButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 0
+y 20
+w 100
+h 20
+fgColor index 14
+bgColor index 4
+inconsistentColor index 12
+topShadowColor index 2
+botShadowColor index 12
+controlPv "$(dev):$(area):$(position):$(name)arm"
+indicatorPv "$(dev):$(area):$(position):$(name)arm"
+font "helvetica-medium-r-10.0"
+endObjectProperties
+
+# (Message Button)
+object activeMessageButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 200
+y 20
+w 100
+h 20
+fgColor index 14
+onColor index 4
+offColor index 4
+topShadowColor index 0
+botShadowColor index 14
+controlPv "$(dev):$(area):$(position):$(name)softTrigger"
+pressValue "1"
+releaseValue 
+onLabel "softTrigger"
+offLabel "softTrigger"
+3d
+useEnumNumeric
+font "helvetica-medium-r-10.0"
+endObjectProperties
+
