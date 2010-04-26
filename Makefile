@@ -1,28 +1,15 @@
-#Makefile at top of application tree
+# Makefile for Asyn gtr support
+#
+# Created by norume on Fri Oct 29 13:59:30 2004
+# Based on the Asyn top template
+
 TOP = .
-ifneq ($(wildcard $(TOP)/configure)x,x)
-
 include $(TOP)/configure/CONFIG
-DIRS := $(DIRS) $(filter-out $(DIRS), configure)
-DIRS := $(DIRS) $(filter-out $(DIRS), $(wildcard gtrApp))
-DIRS := $(DIRS) $(filter-out $(DIRS), $(wildcard vtr*App))
-DIRS := $(DIRS) $(filter-out $(DIRS), $(wildcard sis*App))
-DIRS := $(DIRS) $(filter-out $(DIRS), $(wildcard exampleApp))
-DIRS := $(DIRS) $(filter-out $(DIRS), $(wildcard iocBoot))
+
+DIRS := configure
+DIRS += $(wildcard *[Ss]up)
+#DIRS += $(wildcard *[Aa]pp)
+DIRS += $(wildcard test*[Aa]pp)
+DIRS += $(wildcard ioc[Bb]oot)
+
 include $(TOP)/configure/RULES_TOP
-
-else
-
-include $(TOP)/config/CONFIG_APP
-DIRS += config
-DIRS += gtrApp
-DIRS += vtr10010App
-DIRS += vtr1012App
-DIRS += vtr10012App
-DIRS += vtr812App
-DIRS += sisfadcApp
-DIRS += exampleApp
-DIRS += iocBoot
-include $(TOP)/config/RULES_TOP
-
-endif
