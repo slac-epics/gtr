@@ -12,8 +12,7 @@ GTRSUP = $(TOP)
 GTRSUP_LIB = $(TOP)/lib/$(T_A)
 GTRSUP_BIN = $(TOP)/bin/$(T_A)
 
-
-#PROD_IOC_vxWorks = testGtr
+PROD_IOC_vxWorks = testGtr
 #PROD_IOC_RTEMS-mvme2100 = testGtr
 #PROD_IOC_RTEMS-mvme5500 = testGtr
 PROD_IOC_RTEMS-beatnik = testGtr
