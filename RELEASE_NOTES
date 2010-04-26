@@ -1,0 +1,41 @@
+Release Notes for the event package
+-----------------------------------
+
+gtr-R2-0-0:	Generic Transient Recorder (GTR) version 2.3 from:
+		http://www.aps.anl.gov/epics/modules/analog/gtr/index.html
+
+		Build with base-R3-14-8-2-lcls6
+		Build with rtems-4.9.4
+
+		Included in CVSROOT/modules as 'gtr'.
+
+		Previous versions of CVS applications such as gtrApp,sisfadcApp,vtr*App are unsupported 
+		in the official EPICS gtr release site.
+		Accordingly the directory 'config' and all these apps are ignored in the Makefiles.
+		
+		Only gtrSup, drvUniverseDmaSup and testGtrApp are supported. 
+		Accordingly, the directory 'configure' and these directories are supported in the Makefiles.
+
+		medm files converted to edm files with adl2edl.
+
+		iocBoot provided for sample database and substitution files for IOC applications
+		that use this gtr module.
+		
+		TARGET ARCH set to RTEMS-beatnik only in configure/CONFIG.
+		
+		
+Older CVS Tags:	straumann_20070529,
+		straumann_20070522,
+		HEAD,
+		FIXES-TO-EPICS-3-14-8-1,
+		EPICS-3-14-8-1-BEFORE-3-14-8-2,
+		EPICS-3-14-7-BEFORE-3-14-8-1,
+		EPICS-3-14-7-BEFORE-3-14-8 
+		
+		Changes for RTEMS.
+
+GTR-1-2:	Generic Transient Recorder (GTR) version 1.2 from:
+		http://www.aps.anl.gov/asd/people/mrk/epics/modules/instrument/gtr/
+
+
+ 
