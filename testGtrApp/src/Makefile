@@ -15,7 +15,7 @@ GTRSUP_BIN = $(TOP)/bin/$(T_A)
 PROD_IOC_vxWorks = testGtr
 #PROD_IOC_RTEMS-mvme2100 = testGtr
 #PROD_IOC_RTEMS-mvme5500 = testGtr
-PROD_IOC_RTEMS-beatnik = testGtr
+PROD_IOC_RTEMS = testGtr
 PROD += $(PROD_IOC_$(T_A))
 
 # testGtr.dbd will be made up from these files:
