@@ -1,6 +1,0 @@
-vtr10012_8 only works with mv167 because of block transfers
-
-vtr10012
-  To get prePostTrigger to work I had to read status register after arming
-  Cant get prePost to work with multiple events
-

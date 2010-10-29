@@ -107,3 +107,11 @@ III - Adding gtr database and FADC configuration to your IOC startup file:
 	    there are some input signals. Waveform display file gtrWaveform.edl pops up
 		
 		If everything goes well, the SIS3300 GTR display should be displaying the digitized waveforms!
+		
+Notes from Stephanie Allison for very old releases (<= gtr1-2):
+---------------------------------------------------------------
+vtr10012_8 only works with mv167 because of block transfers
+
+vtr10012
+  To get prePostTrigger to work I had to read status register after arming
+  Cant get prePost to work with multiple events	
