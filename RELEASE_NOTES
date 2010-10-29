@@ -1,7 +1,21 @@
 Release Notes for the event package
 -----------------------------------
+gtr-R2-1-0:	Generic Transient Recorder (GTR) version 2.3 from:
 
-gtr-R2-0-0:	Generic Transient Recorder (GTR) version 2.3 from:
+
+		Build with base-R3-14-8-2-lcls6
+		Build with rtems-4.9.4
+
+		Included in CVSROOT/modules as 'gtr'.
+
+		Previous versions of CVS applications such as config,gtrApp,sisfadcApp,vtr*App have been removed 
+		in this release	and is now consistent with the official EPICS gtr release site.
+		These directories that were present in gtr1-2 were overhauled and removed in gtr2-3 by the
+		EPICS colloboration supporting gtr.
+		
+		Only configure, gtrSup, drvUniverseDmaSup and testGtrApp are supported in gtr2-3. 
+
+gtr-R2-0-1:	Generic Transient Recorder (GTR) version 2.3 from:
 		http://www.aps.anl.gov/epics/modules/analog/gtr/index.html
 
 		Build with base-R3-14-8-2-lcls6
