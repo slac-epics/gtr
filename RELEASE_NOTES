@@ -1,5 +1,7 @@
 Release Notes for the event package
 -----------------------------------
+gtr-R2-1-2: Added gtrwaveformBSA.template file to CVS and to Makefile
+
 gtr-R2-1-1:	Added gtrwaveformBSA.template
 
 gtr-R2-1-0:	Generic Transient Recorder (GTR) version 2.3 from:
