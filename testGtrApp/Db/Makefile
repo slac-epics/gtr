@@ -11,7 +11,7 @@ include $(TOP)/configure/CONFIG
 # Create and install (or just install) into <top>/db
 # databases, templates, substitutions like this
 #DB += gtr.db gtrwaveform.db
-DB += gtr.template gtrwaveform.template
+DB += gtr.template gtrwaveform.template gtrwaveformBSA.template
 
 #----------------------------------------------------
 # If <anyname>.db template is not named <anyname>*.template add
