@@ -1,5 +1,17 @@
 Release Notes for the event package
 -----------------------------------
+gtr-R2-1-4: Rebuild gtr-R2-1-3 with base-R3-14-8-2-lcls6 for backwards-compatibility sake of Motion control iocs that run with this base.
+            CROSS_COMPILER_TARGET_ARCHS = RTEMS-beatnik
+			
+			For Shantha's Motion Control ioc-dmp1-mc01 that uses gtr module compatible with base-R3-14-8-2-lcls6.
+			
+gtr-R2-1-3: Build with base-R3-14-11
+            CROSS_COMPILER_TARGET_ARCHS = vxWorks-ppc604_long vxWorks-mpc8540 RTEMS-beatnik
+			For Ernest's ATF2 work that has support for vxworks.
+			
+			Modified gtrwaveformBSA.template to include the TSE field and set SCAN interrupt PRIO to HIGH.
+			Modified gtr.template.
+			
 gtr-R2-1-2: Added gtrwaveformBSA.template file to CVS and to Makefile
 
 gtr-R2-1-1:	Added gtrwaveformBSA.template
