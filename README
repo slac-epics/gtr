@@ -2,7 +2,10 @@ Instructions for gtr module users
 
 Shantha Condamoor
 
-Last Updated 04/23/2010
+Revision History:
+-----------------
+Last Update: 03/04/2011
+Updated 04/23/2010
 -----------------------
 
 The gtr module was downloaded from the epics site.
@@ -103,6 +106,16 @@ III - Adding gtr database and FADC configuration to your IOC startup file:
     (b) Set 'autoRestart' to 'yes'.
 	(c) Set 'trigger' to 'FP gate'.
     (d) Verify that 'clock' shows the clock rate chosen in sisfadcConfig()
+	    Note: There is a bug in the current gtr2-3 code from EPICS site for clock speeds for sis3301.
+		Till a new release is made for the gtr module, the sis3301 can be intialized from the st.cmd as in the following example:
+        # =============================================================
+        # Setup/Initialize GTR SIS3300/SIS3301 FADC:
+        # function: int sisfadcConfig(int card,int clockSpeed, unsigned int a32offset,int intVec,int intLev, int useDma)
+        # ============================================================
+        # sisfadcConfig(1,105,0x21000000,0xc2,4,0)	# for SIS3301
+
+        # sisfadcConfig(1,100,0x21000000,0xc2,4,0)  # for SIS3300
+		  
     (e) Click on 'waveforms' and choose the ones that have been enabled in the database and on which
 	    there are some input signals. Waveform display file gtrWaveform.edl pops up
 		
