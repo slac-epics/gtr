@@ -107,7 +107,7 @@ record(calc,"$(dev):$(area):$(position):$(name)counter")
 {
     field(DESC, "$(desc) Counter")
     field(CALC,"A+1")
-    field(INPA,"$(name)counter")
+    field(INPA,"$(dev):$(area):$(position):$(name)counter")
 }
 record(ai,"$(dev):$(area):$(position):$(name)everySecond")
 {
@@ -119,12 +119,12 @@ record(calc,"$(dev):$(area):$(position):$(name)perSecond")
 {
     field(DESC, "$(desc) Per Second")
     field(CALC,"A")
-    field(INPA,"$(name)counter")
+    field(INPA,"$(dev):$(area):$(position):$(name)counter")
     field(FLNK,"$(dev):$(area):$(position):$(name)reset")
 }
 record(ao,"$(dev):$(area):$(position):$(name)reset")
 {
     field(DESC, "$(desc) Reset")
     field(VAL,"0")
-    field(OUT,"$(name)counter NPP NMS")
+    field(OUT,"$(dev):$(area):$(position):$(name)counter NPP NMS")
 }

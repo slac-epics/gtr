@@ -37,6 +37,12 @@
 #				Example: SHORT
 #	desc		Description.
 #				Example Include SIS Type name in the description if applicable as sis3300
+#   tse         Setting this field to a specific event code forces to set the timestamp in the gtrwaveform record by 
+#               setting TSE=event-code-that triggered the waveform and setting the VME IRQ 
+#               for that event code from the EVR triggers page (and in the proper substitutions file).
+#               This is a work-around proposed by Stephanie Allison for BSA for waveform records.
+#               This solution will work only for slow trigger rates and is not guaranteed for higher rates.
+#
 #==============================================================================
 record(waveform,"$(dev):$(area):$(position):$(name)waveform$(signal)")
 {
@@ -44,7 +50,9 @@ record(waveform,"$(dev):$(area):$(position):$(name)waveform$(signal)")
     field(DTYP,"GTR")
     field(INP,"#C$(card) S$(signal) @readData")
     field(SCAN,"I/O Intr")
+    field(PRIO, "HIGH")		
     field(NELM,"$(size)")
     field(FTVL,"$(type)")
-    field(FLNK, "$(FLNK)")	
+    field(TSE, "$(tse)")		
+#    field(FLNK, "$(FLNK)")	
 }
