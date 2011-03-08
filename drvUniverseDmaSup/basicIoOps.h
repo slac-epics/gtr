@@ -1,7 +1,7 @@
 #ifndef TILLS_INPUT_OUTPUT_OPERA_H
 #define TILLS_INPUT_OUTPUT_OPERA_H
 
-/* $Id$ */
+/* $Id: basicIoOps.h,v 1.1 2004/11/05 21:26:05 norume Exp $ */
 
 #ifdef __rtems__
 #include <rtems.h>
