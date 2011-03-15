@@ -1,5 +1,7 @@
 Release Notes for the event package
 -----------------------------------
+gtr-R2-1-6: Added DMA support for RTEMS with 'drvRTEMSDmaSup' from Till Straumann
+			
 gtr-R2-1-5: Forgot to commit RELEASE_SITE in the previous tag.
             Same as gtr-R2-1-4.
       

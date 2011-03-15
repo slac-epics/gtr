@@ -4,7 +4,7 @@ Shantha Condamoor
 
 Revision History:
 -----------------
-Last Update: 03/04/2011
+Last Update: 03/15/2011 (added DMA support for RTEMS with 'drvRTEMSDmaSup' from Till Straumann)
 Updated 04/23/2010
 -----------------------
 
@@ -26,6 +26,11 @@ I - Building the gtr module:
 
 (4) Target Architecture was chosen to be RTEMS-beatnik.
 
+(5) On March 15th 2011, DMA support for RTEMS was added with the 'drvRTEMSDmaSup' directory provided by Till Starumann.
+    gtrSup/gtr/epicsDma.c was patched to use drvRTEMSDma.
+	Additionally, in gtrSup/Makefile the C-preprocessor symbols
+		HAS_UNIVERSEDMA is UNDEFINED
+		HAS_RTEMSDMASUP is   DEFINED
 
 II - Adding the gtr package to your IOC application:
 ----------------------------------------------------
@@ -115,6 +120,8 @@ III - Adding gtr database and FADC configuration to your IOC startup file:
         # sisfadcConfig(1,105,0x21000000,0xc2,4,0)	# for SIS3301
 
         # sisfadcConfig(1,100,0x21000000,0xc2,4,0)  # for SIS3300
+		
+		# sisfadcConfig(1,100,0x21000000,0xc2,4,1)  # for SIS3300 with DMA
 		  
     (e) Click on 'waveforms' and choose the ones that have been enabled in the database and on which
 	    there are some input signals. Waveform display file gtrWaveform.edl pops up
