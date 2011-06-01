@@ -1,9 +1,22 @@
+/*
+	Modified:	Shantha Condamoor
+	Date:		1-Jun-2011
+	Author:		Till Straumann
+	Patch:		BUGFIX: MUST NOT use a mutex for a lock since it is not released from
+   				the task context which acquired it!
+   				This bug caused a task to never relinquish a temporarily inherited,
+   				high priority (since it apparently always held this driver's mutex).
+	
+/*
 /* DMA Routines using the universe driver */
+/* Author/Copyright: Till Straumann <strauman@slac.stanford.edu>, 2002-2003 */ 
+    
+/* LICENSE: the EPICS open license as distributed with this file */ 
 
 #include <stdlib.h>
 #include <errno.h>
 
-#include <epicsMutex.h>
+#include <epicsEvent.h>
 #include <epicsInterrupt.h>
 #include <errlog.h>
 #include <devLib.h>
@@ -69,7 +82,7 @@ unsigned ams[]={
 
 #undef DEBUG
 
-static epicsMutexId lock=0;
+static epicsEventId lock=0;
 static DMA_ID inProgress=0;
 
 typedef struct dmaRequest {
@@ -84,6 +97,7 @@ typedef struct dmaRequest {
 #ifdef DEBUG
 unsigned long universeDmaLastDGCS=0;
 #endif
+unsigned long universeDmaLastErrDGCS=0;
 
 static void
 universeDMAisr(void *p)
@@ -96,7 +110,8 @@ unsigned long s=vmeUniverseReadReg(UNIV_REGOFF_DGCS);
 
 	if (inProgress) {
 		inProgress->dgcs   = s;
-		inProgress->status = s & ERR_STAT_MASK ? EIO : 0;
+        if ( (inProgress->status = (s & ERR_STAT_MASK) ? EIO : 0) ) 
+        	universeDmaLastErrDGCS = s; 
 		if (inProgress->callback)
 				inProgress->callback(inProgress->closure);
 		inProgress = 0;
@@ -105,13 +120,13 @@ unsigned long s=vmeUniverseReadReg(UNIV_REGOFF_DGCS);
 	vmeUniverseWriteReg(s,  UNIV_REGOFF_DGCS);
 	iobarrier_w();
 	/* yield the driver */
-	epicsMutexUnlock(lock);
+	epicsEventSignal(lock);
 }
 
 static void
 universeDmaInit(void)
 {
-	lock=epicsMutexCreate();
+	lock=epicsEventMustCreate(epicsEventFull);
 	/* clear possible pending IRQ */
 	vmeUniverseWriteReg(
 		UNIV_LINT_STAT_DMA,
@@ -307,7 +322,7 @@ unsigned long dgcs;
 	dmaId->status = EINVAL;
 	dmaId->dgcs   = 0;
 
-	epicsMutexLock(lock);
+	epicsEventWait(lock);
 
 	inProgress = dmaId;
 
@@ -343,7 +358,7 @@ STATUS status;
 	if ( (unsigned long)-1 == (dctl |= dctlSetup(adrsSpace, dataWidth)) )
 		return -1;
 
-	epicsMutexLock(lock);
+	epicsEventWait(lock);
 
 	inProgress = dmaId;
 
@@ -354,7 +369,7 @@ STATUS status;
 					vmeAddr, pLocal, length);
 #endif
 	if ((status=vmeUniverseStartDMA(LOCAL2PCI(pLocal),vmeAddr,length)))
-		epicsMutexUnlock(lock);
+		epicsEventSignal(lock);
 
 	return status;
 }

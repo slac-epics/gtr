@@ -1,5 +1,32 @@
 Release Notes for the event package
 -----------------------------------
+gtr-R2-1-7: (1) Till Straumann found a bad bug in drvRTEMSDma and fixed it.
+			(drvUniverseDma has the same bug but  it is deprecated anyways [superseded by drvRTEMSDma]).
+			Patched drvRTEMSDmaSup.c and drvUniverseDma.c
+			
+			Details of the BUGFIX: MUST NOT use a mutex for a lock since it is not released from the task context which acquired it!
+   				This bug caused a task to never relinquish a temporarily inherited,
+   				high priority (since it apparently always held this driver's mutex).
+			
+			(2) Lam T. from Photon Group found and fixed a bug in sis33xy driver related to DMA option.
+			
+			Details of the BUGFIX:  Fix for the problem of the DMA support for the SIS3301.
+ 					  "The problem is the sis3301 driver passes the wrong VME mapping address when it calls the DMA function.
+					  There are 2 different address to use for the memory access during the data transfer with the VME bus. 
+					  DMA access failed because the driver passed the converted address from the VME mapping address 
+					  to the local address to the DMA function.
+ 					  Lam Thu fixed the problem by adding the new address pointer to the driver data structure 
+					  and a flag to indicate whether the DMA function is selected or not.
+ 					  During the board configuration, if the useDMA option is set, the DMA address pointer will 
+					  store the mapping VME address for later use.
+ 					  In the read function of the digitized data subroutine, if the DMA function is set, 
+					  the mapping VME address will be used to pass to the DMA function instead of the local converted address.
+					  
+			Use case:	sisfadcConfig(1,100,0x21000000,0xc2,4,0)	# for SIS3300, no DMA
+						(or)
+						sisfadcConfig(1,100,0x21000000,0xc2,4,1)	# for SIS3300, with DMA
+
+
 gtr-R2-1-6: Added DMA support for RTEMS with 'drvRTEMSDmaSup' from Till Straumann
 			
 gtr-R2-1-5: Forgot to commit RELEASE_SITE in the previous tag.
