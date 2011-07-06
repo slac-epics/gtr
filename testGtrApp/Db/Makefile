@@ -10,7 +10,24 @@ include $(TOP)/configure/CONFIG
 #----------------------------------------------------
 # Create and install (or just install) into <top>/db
 # databases, templates, substitutions like this
-#DB += gtr.db gtrwaveform.db
+# ==================================================
+# Install example fully instantiated DB for testing
+# this module locally
+DB +=  gtrTest.db gtrwaveformTest.db
+# =================================================
+
+# ==============================================================
+# Install Database Templates for use with 
+# external IOC Applications: This is a template that is normally
+# instantiated in an "st.cmd" via dbLoadRecords()
+# ==============================================================
+DB += gtr.db gtrwaveform.db
+
+# ==============================================================
+# Install Database Templates for use with
+# external IOC Applications: This is a template that is ideally
+# fully instantiated via an IOC's own substitution file
+# ==============================================================
 DB += gtr.template gtrwaveform.template gtrwaveformBSA.template
 
 #----------------------------------------------------
