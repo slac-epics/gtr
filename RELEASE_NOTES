@@ -1,5 +1,15 @@
 Release Notes for the event package
 -----------------------------------
+gtr-R2-3-0:  gtrTest.substitutions and gtrwaveformTest.substitutions were added to support
+             testing of the gtr software module before releasing for IOC applications.
+             The substitution files also serve as an example for IOC developers.
+             gtr.substitutions gtrwaveform.substitutions were removed so as not to clobber
+             the original database templates namely, gtr.db and gtrwaveform.db.  So, now
+             we install gtr.db and gtrwaveform.db as well.
+             The difference between gtr.db and gtr.template is basically in how macros
+             are named.  LCLS uses a macro naming convention that facilitates the use of
+             the LCLS naming convention.
+
 gtr-R2-1-7: (1) Till Straumann found a bad bug in drvRTEMSDma and fixed it.
 			(drvUniverseDma has the same bug but  it is deprecated anyways [superseded by drvRTEMSDma]).
 			Patched drvRTEMSDmaSup.c and drvUniverseDma.c
