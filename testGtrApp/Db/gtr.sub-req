@@ -1,0 +1,12 @@
+#
+# Generic Transient Recorder (GTR)
+# Sample autosave substitutions file
+#
+
+file gtr.tpl-req
+{
+	{
+		name	=	$(IOC):GTR:01:,
+	}
+}
+

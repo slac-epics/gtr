@@ -2,37 +2,41 @@
 #
 # Abs:  LCLS GTR Waveform records
 #
-# Name: gtrwaveform.template
+# Name: gtrwaveformBSA.template
 # Author: Shantha Condamoor (scondam)
 #
 # Associated Display: gtrWaveform.edl
 #
 # Rem:	This file added has more macros to the original gtrwaveform.db file that was
 #	bundled in the EPICS package gtr2-3
-#	In the IOC application, use substitutions for expanding the macros. 
+#	In the IOC application. 
 # 
-# Macros:
-#	Note:	'name' and 'card' together identify a specific, controllable gtr module.	
 #	name	The name of the associated transient driver.
-#		The name is read from the driver during record initialization. 
 #		This should match with the name in the startup script st.cmd
 #	card	The card (link) number of the particular (digital adc) recorder starting with 1.
 #		The card number must match the value specified in the driver xxxConfig.
 #		Example: 'card' specified in sisfadcConfig() command in the application startup script st.cmd.
-#	signal		The input signal number
-#				Example: 0-7 for SIS3300
-#	size		The number of samples to acquire
-#				Example: 8000
-#	type		The waveform record data type.
-#				Example: SHORT
-#	desc		Description.
-#				Example Include SIS Type name in the description if applicable as sis3300
+#	signal	The input signal number
+#		Example: 0-7 for SIS3300
+#	size	The number of samples to acquire
+#		Example: 8000
+#	type	The waveform record data type.
+#		Example: SHORT
+#   	tse     Setting this field to a specific event code forces to set the timestamp in the gtrwaveform record by 
+#               setting TSE=event-code-that triggered the waveform and setting the VME IRQ 
+#               for that event code from the EVR triggers page (and in the proper substitutions file).
+#               This is a work-around proposed by Stephanie Allison for BSA for waveform records.
+#               This solution will work only for slow trigger rates and is not guaranteed for higher rates.
+#
 #==============================================================================
 record(waveform,"$(name)waveform$(signal)")
 {
+    field(DESC, "CH$(signal) $(desc) Waveform")
     field(DTYP,"GTR")
     field(INP,"#C$(card) S$(signal) @readData")
     field(SCAN,"I/O Intr")
+    field(PRIO, "HIGH")		
     field(NELM,"$(size)")
     field(FTVL,"$(type)")
+    field(TSE, "$(tse)")		
 }

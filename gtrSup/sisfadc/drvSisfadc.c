@@ -33,7 +33,9 @@
 /*
  * Size of local cache
  */
-#define DMA_BUFFER_CAPACITY   2048
+#define DMA_BUFFER_CAPACITY  16384 /* was 2048 */ 
+#define USE_DMA   1
+#define NO_DMA    0
 
 /*
  * Uncomment to produce timing signals on user output
@@ -68,7 +70,7 @@ typedef unsigned int uint32;
 #define MEMORYSTART 0x00400000
 #define ARRAYBYTES  0x00080000
 #define ARRAYSIZE   ARRAYBYTES/4
-
+
 static char *clockChoices3300[] = {
     "100 MHz","50 MHz","25 MHz","12.5 MHz","6.25 MHz","3.125 MHz",
     "extClock","P2-Clock","Random"
@@ -148,6 +150,9 @@ static char *armChoices[narmChoices] = {
     "disarm","postTrigger","prePostTrigger"
 };
 
+/* Added flag for for DMA function option */
+static short     DMAoption;
+
 typedef struct sisInfo {
     ELLNODE     node;
     int         card;
@@ -168,13 +173,14 @@ typedef struct sisInfo {
     void        *userPvt;
     epicsDmaId  dmaId;
     long        *dmaBuffer;
+    char        *VMEaddress;  /* added pointer to VME mapping address */
 } sisInfo;
 
 static ELLLIST sisList;
 static int sisIsInited = 0;
 static int isRebooting;
 static int sisFadcDebug = 0;
-
+
 static void writeRegister(sisInfo *psisInfo, int offset,uint32 value)
 {
     char *a32 = psisInfo->a32;
@@ -262,7 +268,7 @@ void sisIH(void *arg)
         break;
     }
 }
-
+
 STATIC void readContiguous(sisInfo *psisInfo,
     gtrchannel *phigh,gtrchannel *plow,uint32 *pmemory,
     int nmax,int *nskipHigh, int *nskipLow)
@@ -377,7 +383,7 @@ STATIC void sisreport(gtrPvt pvt,int level)
     printf(" MAXEVENTS %u",value);
     printf("\n");
 }
-
+
 STATIC gtrStatus sisclock(gtrPvt pvt, int value)
 {
     sisInfo *psisInfo = (sisInfo *)pvt;
@@ -445,7 +451,7 @@ STATIC gtrStatus sisnumberPTE(gtrPvt pvt, int value)
     psisInfo->numberPTE = value;
     return(gtrStatusOK);
 }
-
+
 STATIC gtrStatus sisarm(gtrPvt pvt, int value)
 {
     sisInfo *psisInfo = (sisInfo *)pvt;
@@ -521,7 +527,7 @@ STATIC gtrStatus sissoftTrigger(gtrPvt pvt)
     writeRegister(psisInfo,START,1);
     return(gtrStatusOK);
 }
-
+
 STATIC gtrStatus sisreadMemory(gtrPvt pvt,gtrchannel **papgtrchannel)
 {
     sisInfo *psisInfo = (sisInfo *)pvt;
@@ -529,7 +535,11 @@ STATIC gtrStatus sisreadMemory(gtrPvt pvt,gtrchannel **papgtrchannel)
     int indgroup;
     int numberPPS = psisInfo->numberPPS;
 
-    pbank = psisInfo->a32 + MEMORYSTART;
+    if(DMAoption == USE_DMA)
+       pbank = psisInfo->VMEaddress + MEMORYSTART;
+    else
+       pbank = psisInfo->a32 + MEMORYSTART;
+
     for(indgroup=0; indgroup<4; indgroup++) {
         gtrchannel *phigh;
         gtrchannel *plow;
@@ -573,8 +583,17 @@ STATIC gtrStatus sisreadMemory(gtrPvt pvt,gtrchannel **papgtrchannel)
                     volatile int *ptriggerInfo;
                     int endAddress;
 
-                    ptriggerInfo = (volatile int *)
-                        (psisInfo->a32 + 0x201000 + indevent*4);
+                    if(DMAoption == NO_DMA)
+                    {
+                        ptriggerInfo = (volatile int *)
+                            (psisInfo->a32 + 0x201000 + indevent*4);
+                    }
+                    else
+                    {
+                        ptriggerInfo = (volatile int *)
+                            (psisInfo->VMEaddress + 0x201000 + indevent*4);
+                    }
+
                     endAddress =  *ptriggerInfo & 0x0000ffff;
                     nskipHigh = nmax - nhigh;
                     nskipLow = nmax - nlow;
@@ -602,7 +621,7 @@ STATIC gtrStatus sisreadMemory(gtrPvt pvt,gtrchannel **papgtrchannel)
     }
     return(gtrStatusOK);
 }
-
+
 STATIC gtrStatus sisreadRawMemory(gtrPvt pvt,gtrchannel **papgtrchannel)
 {
     sisInfo *psisInfo = (sisInfo *)pvt;
@@ -610,7 +629,11 @@ STATIC gtrStatus sisreadRawMemory(gtrPvt pvt,gtrchannel **papgtrchannel)
     int indgroup;
     int numberPPS = psisInfo->numberPPS;
 
-    pbank = psisInfo->a32 + MEMORYSTART;
+    if(DMAoption == NO_DMA)
+        pbank = psisInfo->a32 + MEMORYSTART;
+    else
+        pbank = psisInfo->VMEaddress + MEMORYSTART;
+
     for(indgroup=0; indgroup<4; indgroup++) {
         gtrchannel *pchan;
         uint32 *pgroup;
@@ -689,7 +712,7 @@ STATIC gtrStatus sisreadRawMemory(gtrPvt pvt,gtrchannel **papgtrchannel)
     }
     return(gtrStatusOK);
 }
-
+
 STATIC gtrStatus sisgetLimits(gtrPvt pvt,int16 *rawLow,int16 *rawHigh)
 {
     sisInfo *psisInfo = (sisInfo *)pvt;
@@ -793,7 +816,7 @@ sisname,
 0, /*lock*/
 0  /*unlock*/
 };
-
+
 int sisfadcConfig(int card,int clockSpeed,
     unsigned int a32offset,int intVec,int intLev, int useDma)
 {
@@ -822,9 +845,8 @@ int sisfadcConfig(int card,int clockSpeed,
     }
     if(devReadProbe(4,a32+MODID,&probeValue)!=0) {
         printf("sisfadcConfig: no card at %#x (local address %p)\n",a32offset,(void *)a32);
-printf("sisType probeValue %8.8x\n",probeValue);
-while (devReadProbe(4,a32+MODID,&probeValue)!=0);
-        return(0);
+        printf("sisType probeValue %8.8x\n",probeValue);
+        while (devReadProbe(4,a32+MODID,&probeValue)!=0);
     }
     if((probeValue>>16) == 0x3300) {
         type = sisType3300;
@@ -872,11 +894,15 @@ while (devReadProbe(4,a32+MODID,&probeValue)!=0);
     psisInfo->intLev = intLev;
     writeRegister(psisInfo,RESET,1);
     if(useDma) {
+        DMAoption = USE_DMA;
+        psisInfo->VMEaddress = (char*) a32offset;
+        printf("VME mapping address for DMA at %p\n",(void *)psisInfo->VMEaddress);
         psisInfo->dmaId = epicsDmaCreate(NULL, NULL);
         if(psisInfo->dmaId == NULL)
             printf("sisfadcConfig: DMA requested, but not available.\n");
     }
     else {
+        DMAoption = NO_DMA;
         psisInfo->dmaId = NULL;
     }
     ellAdd(&sisList,&psisInfo->node);

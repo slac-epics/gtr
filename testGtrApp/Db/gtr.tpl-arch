@@ -1,0 +1,16 @@
+# Archive values for gtr module
+$(name)name		10 monitor
+$(name)arm		10 monitor
+$(name)clock		10 monitor
+$(name)trigger		10 monitor
+$(name)multiEvent	10 monitor
+$(name)preAverage	10 monitor
+$(name)numberPTS	10 monitor
+$(name)numberPPS	10 monitor
+$(name)numberPTE	10 monitor
+$(name)softTrigger	10 monitor
+$(name)autoRestart	10 monitor
+$(name)counter		10 monitor
+$(name)reset		10 monitor
+$(name)everySecondperSecond	10 monitor
+

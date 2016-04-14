@@ -1,0 +1,130 @@
+Version History:
+
+4/21/2011      - tlam
+Increased the buffer size for the digitized data from 8K to 64K.
+
+4/06/2011      - tlam
+Fixed the problem of the DMA support function.
+
+3/23/2011      - tlam
+Merged in DMA support from E-beam group (gtr-R2-1-6).
+
+3/7/2011       - bhill
+Imported 3/7/2011 from ANL GTR module version R2-3:
+http://www.aps.anl.gov/epics/modules/analog/gtr/index.html
+Created $REPO/epics/trunk/modules/gtr/current via svn cp
+as the starting point for our version of the gtr module.
+
+Release Notes for the event package
+-----------------------------------
+gtr-R2-3-0:  gtrTest.substitutions and gtrwaveformTest.substitutions were added to support
+             testing of the gtr software module before releasing for IOC applications.
+             The substitution files also serve as an example for IOC developers.
+             gtr.substitutions gtrwaveform.substitutions were removed so as not to clobber
+             the original database templates namely, gtr.db and gtrwaveform.db.  So, now
+             we install gtr.db and gtrwaveform.db as well.
+             The difference between gtr.db and gtr.template is basically in how macros
+             are named.  LCLS uses a macro naming convention that facilitates the use of
+             the LCLS naming convention.
+
+gtr-R2-1-7: (1) Till Straumann found a bad bug in drvRTEMSDma and fixed it.
+			(drvUniverseDma has the same bug but  it is deprecated anyways [superseded by drvRTEMSDma]).
+			Patched drvRTEMSDmaSup.c and drvUniverseDma.c
+			
+			Details of the BUGFIX: MUST NOT use a mutex for a lock since it is not released from the task context which acquired it!
+   				This bug caused a task to never relinquish a temporarily inherited,
+   				high priority (since it apparently always held this driver's mutex).
+			
+			(2) Lam T. from Photon Group found and fixed a bug in sis33xy driver related to DMA option.
+			
+			Details of the BUGFIX:  Fix for the problem of the DMA support for the SIS3301.
+ 					  "The problem is the sis3301 driver passes the wrong VME mapping address when it calls the DMA function.
+					  There are 2 different address to use for the memory access during the data transfer with the VME bus. 
+					  DMA access failed because the driver passed the converted address from the VME mapping address 
+					  to the local address to the DMA function.
+ 					  Lam Thu fixed the problem by adding the new address pointer to the driver data structure 
+					  and a flag to indicate whether the DMA function is selected or not.
+ 					  During the board configuration, if the useDMA option is set, the DMA address pointer will 
+					  store the mapping VME address for later use.
+ 					  In the read function of the digitized data subroutine, if the DMA function is set, 
+					  the mapping VME address will be used to pass to the DMA function instead of the local converted address.
+					  
+			Use case:	sisfadcConfig(1,100,0x21000000,0xc2,4,0)	# for SIS3300, no DMA
+						(or)
+						sisfadcConfig(1,100,0x21000000,0xc2,4,1)	# for SIS3300, with DMA
+
+
+gtr-R2-1-6: Added DMA support for RTEMS with 'drvRTEMSDmaSup' from Till Straumann
+			
+gtr-R2-1-5: Forgot to commit RELEASE_SITE in the previous tag.
+            Same as gtr-R2-1-4.
+      
+gtr-R2-1-4:  Rebuild gtr-R2-1-3 with base-R3-14-8-2-lcls6 for backwards-compatibility sake of Motion control iocs that run with this base.
+            CROSS_COMPILER_TARGET_ARCHS = RTEMS-beatnik
+			
+			For Shantha's Motion Control ioc-dmp1-mc01 that uses gtr module compatible with base-R3-14-8-2-lcls6.
+			
+gtr-R2-1-3: Build with base-R3-14-11
+            CROSS_COMPILER_TARGET_ARCHS = vxWorks-ppc604_long vxWorks-mpc8540 RTEMS-beatnik
+			For Ernest's ATF2 work that has support for vxworks.
+			
+			Modified gtrwaveformBSA.template to include the TSE field and set SCAN interrupt PRIO to HIGH.
+			Modified gtr.template.
+			
+gtr-R2-1-2: Added gtrwaveformBSA.template file to CVS and to Makefile
+
+gtr-R2-1-1:	Added gtrwaveformBSA.template
+
+gtr-R2-1-0:	Generic Transient Recorder (GTR) version 2.3 from:
+
+
+		Build with base-R3-14-8-2-lcls6
+		Build with rtems-4.9.4
+
+		Included in CVSROOT/modules as 'gtr'.
+
+		Previous versions of CVS applications such as config,gtrApp,sisfadcApp,vtr*App have been removed 
+		in this release	and is now consistent with the official EPICS gtr release site.
+		These directories that were present in gtr1-2 were overhauled and removed in gtr2-3 by the
+		EPICS colloboration supporting gtr.
+		
+		Only configure, gtrSup, drvUniverseDmaSup and testGtrApp are supported in gtr2-3. 
+
+gtr-R2-0-1:	Generic Transient Recorder (GTR) version 2.3 from:
+		http://www.aps.anl.gov/epics/modules/analog/gtr/index.html
+
+		Build with base-R3-14-8-2-lcls6
+		Build with rtems-4.9.4
+
+		Included in CVSROOT/modules as 'gtr'.
+
+		Previous versions of CVS applications such as gtrApp,sisfadcApp,vtr*App are unsupported 
+		in the official EPICS gtr release site.
+		Accordingly the directory 'config' and all these apps are ignored in the Makefiles.
+		
+		Only gtrSup, drvUniverseDmaSup and testGtrApp are supported. 
+		Accordingly, the directory 'configure' and these directories are supported in the Makefiles.
+
+		medm files converted to edm files with adl2edl.
+
+		iocBoot provided for sample database and substitution files for IOC applications
+		that use this gtr module.
+		
+		TARGET ARCH set to RTEMS-beatnik only in configure/CONFIG.
+		
+		
+Older CVS Tags:	straumann_20070529,
+		straumann_20070522,
+		HEAD,
+		FIXES-TO-EPICS-3-14-8-1,
+		EPICS-3-14-8-1-BEFORE-3-14-8-2,
+		EPICS-3-14-7-BEFORE-3-14-8-1,
+		EPICS-3-14-7-BEFORE-3-14-8 
+		
+		Changes for RTEMS.
+
+GTR-1-2:	Generic Transient Recorder (GTR) version 1.2 from:
+		http://www.aps.anl.gov/asd/people/mrk/epics/modules/instrument/gtr/
+
+
+ 

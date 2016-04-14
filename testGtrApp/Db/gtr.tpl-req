@@ -1,0 +1,15 @@
+# Autosave values for gtr module
+$(name)name
+$(name)arm
+$(name)clock
+$(name)trigger
+$(name)multiEvent
+$(name)preAverage
+$(name)numberPTS
+$(name)numberPPS
+$(name)numberPTE
+$(name)softTrigger
+$(name)autoRestart
+$(name)counter
+$(name)everySecondperSecond
+$(name)reset

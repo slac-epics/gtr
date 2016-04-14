@@ -13,8 +13,9 @@ GTRSUP_LIB = $(TOP)/lib/$(T_A)
 GTRSUP_BIN = $(TOP)/bin/$(T_A)
 
 PROD_IOC_vxWorks = testGtr
-PROD_IOC_RTEMS-mvme2100 = testGtr
-PROD_IOC_RTEMS-mvme5500 = testGtr
+#PROD_IOC_RTEMS-mvme2100 = testGtr
+#PROD_IOC_RTEMS-mvme5500 = testGtr
+PROD_IOC_RTEMS = testGtr
 PROD += $(PROD_IOC_$(T_A))
 
 # testGtr.dbd will be made up from these files:
@@ -44,7 +45,7 @@ testGtr_LIBS += $(EPICS_BASE_IOC_LIBS)
 #Libraries needed by particular OS classes
 OP_SYS_LDLIBS_RTEMS += -lbspExt
 #OP_SYS_LDLIBS_RTEMS += -ldrvUniverseDma
-OP_SYS_LDLIBS += $(OP_SYS_LDLIBS_$(OS_CLASS))
+#OP_SYS_LDLIBS += $(OP_SYS_LDLIBS_$(OS_CLASS))
 
 #===========================
 

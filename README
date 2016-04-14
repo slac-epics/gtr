@@ -1,0 +1,141 @@
+Instructions for gtr module users
+
+Thu Lam
+
+3/22/2011: Converted to the initial version from E-beam group (version gtr-R2-6-1)
+
+Shantha Condamoor
+
+Revision History:
+-----------------
+Last Update: 03/15/2011 (added DMA support for RTEMS with 'drvRTEMSDmaSup' from Till Straumann)
+Updated 04/23/2010
+-----------------------
+
+The gtr module was downloaded from the epics site.
+The package version number used for this initial release was gtr2-3.
+
+I - Building the gtr module:
+--------------------------------------------------------
+
+(1) Original code from EPICS site gtr2-3 has been modified for LCLS Controls Department.
+
+(2) medm files have been converted to edm files
+
+(3) gtr.db and gtrwaveform.db have been converted to gtr.template and gtrwaveform.template
+    for supporting added macros. With appropriate substitutions, IOCs can define several devices.
+	However, this means that when a new gtr module is released in EPICS site, these templates
+	must be patched appropriately. This approach has been taken to centralize the changes rather
+	than changing several IOC's gtr templates.
+
+(4) Target Architecture was chosen to be RTEMS-beatnik.
+
+(5) On March 15th 2011, DMA support for RTEMS was added with the 'drvRTEMSDmaSup' directory provided by Till Starumann.
+    gtrSup/gtr/epicsDma.c was patched to use drvRTEMSDma.
+	Additionally, in gtrSup/Makefile the C-preprocessor symbols
+		HAS_UNIVERSEDMA is UNDEFINED
+		HAS_RTEMSDMASUP is   DEFINED
+
+II - Adding the gtr package to your IOC application:
+----------------------------------------------------
+
+(1) Add the appropriate GTR_MODULE_VERSION and GTR=$(EPICS_MODULES)/gtr/$(GENSUB_MODULE_VERSION)
+    to configure/RELEASE file.
+	
+(2) Link gtr library into your app by adding to xxxApp/src/Makefile:
+
+   xxx_LIBS += gtr
+
+(3) Add the following .dbd file to xxxApp/src/Makefile or to xxxApp/src/xxxInclude.dbd:
+
+   xxx_DBD += gtr.dbd
+   
+(4) Add gtr databases to your application.  There are two database templates provided by the gtr module:
+    
+	gtr.template			(gtr.db with more macros)
+	gtrwaveform.template	(gtrwaveform with more macros)
+	
+	Create substitution files for both these files in xxxApp/Db directory.
+	
+	For example substitution files see:
+	
+	gtr/<release>/testGtrApp/Db/gtr.substitutions
+	gtr/<release>/testGtrApp/Db/gtrwaveform.substitutions	
+
+    Note that gtrwaveform.substitutions file sets up SIS3300 FADC for 2 input channels 
+    for a sampling size of 800 points.
+	 
+	
+III - Adding gtr database and FADC configuration to your IOC startup file:
+---------------------------------------------------------------------------------
+	
+	Refer to gtr/<release>/iocBoot/ioc/st.cmd.rtems for an example startup script.
+	
+(1) Ensure that EPICS_CA_MAX_ARRAY_BYTES env variable is set to a large number for handling
+    the waveform inputs in the IOC startup script. This value will be proportional to the
+	number of input channels chosen and number of sampling points chosen for each channel.
+	
+(2) Load database created in the previous section (before iocInit).
+
+    Example: 
+
+    dbLoadRecords( "db/IOC-B025-MC01-gtr.db")
+    dbLoadRecords( "db/IOC-B025-MC01-gtrwaveform.db")
+
+(3) Add FADC configuration before iocInit.
+
+	Example:
+	
+	sisfadcConfig(card, clockspeed, a32offset,intVec,intLev, useDma)
+	sisfadcConfig(4,100,0x90000000,0x86,3,1)
+
+    Note that the <card> must match the macro in the 
+    substitutions file.  Each SIS device must have a unique card name.
+
+(4) Remember to manually set the VME address on the GTR device to 
+    match the one in the substitutions file.  Each card on a VME crate
+    must have a unique address. This is generally settable via some rotary
+	switches or jumpers in the module. read the User's manual for the
+	device for more details.
+
+(5) A couple of EDM displays are available for diagnostics:
+
+	gtr/<release>/medm/gtrControl.edl
+	gtr/<release>/medm/gtrWaveform.edl
+	
+    It requires the same same macros that are in their corresponding substitutions file.
+	
+    These can be added to xxxApp/srcDisplay directory and modified as required.
+
+(6) For starting the GTR device, follow the instructions in the User's Manual for that particular device.
+
+	Example: For SIS3300, to start the digitizer from an external triggered gate input:
+	
+    (a) From the gtrControl.edl display, set "arm" to 'postTrigger'.
+    (b) Set 'autoRestart' to 'yes'.
+	(c) Set 'trigger' to 'FP gate'.
+    (d) Verify that 'clock' shows the clock rate chosen in sisfadcConfig()
+	    Note: There is a bug in the current gtr2-3 code from EPICS site for clock speeds for sis3301.
+		Till a new release is made for the gtr module, the sis3301 can be intialized from the st.cmd as in the following example:
+        # =============================================================
+        # Setup/Initialize GTR SIS3300/SIS3301 FADC:
+        # function: int sisfadcConfig(int card,int clockSpeed, unsigned int a32offset,int intVec,int intLev, int useDma)
+        # ============================================================
+        # sisfadcConfig(1,105,0x21000000,0xc2,4,0)	# for SIS3301
+
+        # sisfadcConfig(1,100,0x21000000,0xc2,4,0)  # for SIS3300
+		
+		# sisfadcConfig(1,100,0x21000000,0xc2,4,1)  # for SIS3300 with DMA
+		  
+    (e) Click on 'waveforms' and choose the ones that have been enabled in the database and on which
+	    there are some input signals. Waveform display file gtrWaveform.edl pops up
+		
+		If everything goes well, the SIS3300 GTR display should be displaying the digitized waveforms!
+		
+Notes from Stephanie Allison for very old releases (<= gtr1-2):
+---------------------------------------------------------------
+vtr10012_8 only works with mv167 because of block transfers
+
+vtr10012
+  To get prePostTrigger to work I had to read status register after arming
+  Cant get prePost to work with multiple events	

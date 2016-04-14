@@ -1,0 +1,12 @@
+#
+# Generic Transient Recorder (GTR)
+# Sample archive substitutions file
+#
+
+file gtr.tpl-arch
+{
+	{
+		name	=	$(IOC):GTR:01:,
+	}
+}
+

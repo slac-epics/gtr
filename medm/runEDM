@@ -1,0 +1,5 @@
+!/bin/sh
+
+exec edm \
+    -m "dev=FADC,area=B34,position=100,name=sis3301" \
+    gtrControl.edl &
