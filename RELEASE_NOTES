@@ -1,5 +1,12 @@
 Version History:
 
+R2.3-1.1.0     Marcio Donadio - 25/Oct/2018
+               - Imported from SVN to GIT and stitched with EED CVS and github
+                 community branch. The module was not upgraded to the most
+                 recent R2-4 version from community. PCDS and EED versions were
+                 not merged.
+               - EPICS base was updated to R3.15.
+
 4/21/2011      - tlam
 Increased the buffer size for the digitized data from 8K to 64K.
 
