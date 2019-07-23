@@ -1,4 +1,7 @@
 Version History:
+R2.3-1.1.1  Marcio Donadio - 23/Jul/2019
+            - Building for linuxRT-x86_64, RTEMS-beatnik, RTEMS-svgm, and
+              RTEMS-mvme3100.
 
 R2.3-1.1.0     Marcio Donadio - 25/Oct/2018
                - Imported from SVN to GIT and stitched with EED CVS and github
